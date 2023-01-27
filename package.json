@@ -1,0 +1,19 @@
+{
+  "type": "module",
+  "name": "ytl",
+  "version": "0.1.0",
+  "description": "",
+  "types": "ytl.d.ts",
+  "main": "ytl.js",
+  "module": "dist/ytl.min.js",
+  "scripts": {
+    "build": "swc ./ytl.js -o dist/ytl.min.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@swc/cli": "^0.1.59",
+    "@swc/core": "^1.3.29"
+  }
+}

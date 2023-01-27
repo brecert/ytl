@@ -1,6 +1,6 @@
 # ytl
-[![gzip size](https://img.badgesize.io/https://unpkg.com/@brecert/ytl/dist/ytl.min.js?compression=gzip&label=gzip)](https://unpkg.com/preact/dist/preact.min.js)
-[![brotli size](https://img.badgesize.io/https://unpkg.com/@brecert/ytl/dist/ytl.min.js?compression=brotli&label=brotli)](https://unpkg.com/preact/dist/preact.min.js)
+[![gzip size](https://img.badgesize.io/https://unpkg.com/@brecert/ytl/dist/ytl.min.js?compression=gzip&label=gzip)](https://unpkg.com/@brecert/ytl/dist/ytl.min.js)
+[![brotli size](https://img.badgesize.io/https://unpkg.com/@brecert/ytl/dist/ytl.min.js?compression=brotli&label=brotli)](https://unpkg.com/@brecert/ytl/dist/ytl.min.js)
 
 `ytl` is a small `htm` like dsl for writing markup in javascript.
 

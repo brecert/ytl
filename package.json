@@ -5,17 +5,23 @@
   "description": "A small tagged template dsl inspired by KDL and htm that transforms through hyperscript functions",
   "types": "ytl.d.ts",
   "main": "ytl.js",
-  "module": "dist/ytl.min.js",
+  "module": "ytl.js",
+  "browser": "ytl.js",
+  "publishConfig": {
+    "module": "dist/ytl.min.js",
+    "browser": "dist/ytl.min.js"
+  },
   "scripts": {
     "build": "swc ./ytl.js -o dist/ytl.min.js"
   },
+  "repository": "brecert/ytl",
   "keywords": [
     "tagged template",
     "html",
     "jsx",
     "hyperscript"
   ],
-  "author": "",
+  "author": "bree <me@bree.dev>",
   "license": "ISC",
   "devDependencies": {
     "@swc/cli": "^0.1.59",

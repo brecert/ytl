@@ -12,13 +12,7 @@ type Node = {
 const ytml = ytl.bind((tag, attrs, ...children): Node => ({
   tag,
   // not efficient but that's fine for this
-  attrs: attrs.reduce(
-    (prev: Record<string, unknown>, curr) =>
-      Array.isArray(curr)
-        ? { ...prev, [curr[0]]: curr[1] }
-        : { ...prev, ...curr as object },
-    {},
-  ),
+  attrs: attrs,
   children,
 }));
 
@@ -44,11 +38,10 @@ Deno.test("ignores comments", () => {
 });
 
 Deno.test("interpolates values as is", () => {
-  const attrsArr = [["arrKey", "arrVal"], ["arrKey2", "arrVal2"]];
   const attrsObj = { "objKey": "objVal", "objKey2": "objVal2" };
 
   const output = ytml`
-    a nameKey="strVal" ...${attrsArr} ...${attrsObj} {}
+    a nameKey="strVal" ...${attrsObj} {}
   `;
 
   assertEquals(output, [
@@ -56,8 +49,6 @@ Deno.test("interpolates values as is", () => {
       tag: "a",
       attrs: {
         nameKey: "strVal",
-        arrKey: "arrVal",
-        arrKey2: "arrVal2",
         objKey: "objVal",
         objKey2: "objVal2",
       },
@@ -67,7 +58,6 @@ Deno.test("interpolates values as is", () => {
 });
 
 Deno.test("features - basic", () => {
-  const attrsArr = [["arrKey", "arrVal"], ["arrKey2", "arrVal2"]];
   const attrsObj = { "objKey": "objVal", "objKey2": "objVal2" };
 
   const output = ytml`
@@ -82,7 +72,7 @@ Deno.test("features - basic", () => {
       // string children
       "string-child"
     }
-    f ${"interpolated key"}=${"interpolated value"} ...${attrsObj} ...${attrsArr} {}
+    f ${"interpolated key"}=${"interpolated value"} ...${attrsObj} {}
   `;
 
   assertEquals(output, [
@@ -102,8 +92,6 @@ Deno.test("features - basic", () => {
         "interpolated key": "interpolated value",
         objKey: "objVal",
         objKey2: "objVal2",
-        arrKey: "arrVal",
-        arrKey2: "arrVal2",
       },
       children: [],
     },

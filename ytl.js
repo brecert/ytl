@@ -52,7 +52,7 @@ export default function ytl(strings, ...values) {
   // last node will be the current node that is being parsed
   let nodes = [];
   // current attribute [key, value]
-  let attr = [, ,];
+  let attrKey;
   // we use this stack of nodes to keep track of what node to append to when parsing of a node is finished 
   let parents = [nodes];
 
@@ -68,7 +68,7 @@ export default function ytl(strings, ...values) {
         if (!token) {
           // if there's no token then we're interpolating a value as a tag
           // this is what allows components to work
-          parents.at(-1).push([value, []]);
+          parents.at(-1).push([value, {}]);
           mode = ModeAttrKey;
         } else if (token[TokenDots]) {
           mode = ModeNodesMerge;
@@ -84,14 +84,13 @@ export default function ytl(strings, ...values) {
           // apply might be better here to reduce cost of destructing + argument stack
           parents.at(-1).push(h(...child));
         } else {
-          nodes.push([value, []]);
+          nodes.push([value, {}]);
           mode = ModeAttrKey;
         }
       },
       [ModeAttrKey]: () => {
         if (!token || token[TokenName] || token[TokenString]) {
-          attr = [value, undefined];
-          current[1].push(attr);
+          current[1][attrKey = value] = undefined;
         } else if (token[TokenSymbol] === "{") {
           parents.push(current);
           mode = ModeTag;
@@ -104,7 +103,7 @@ export default function ytl(strings, ...values) {
       },
       [ModeAttrVal]: () => {
         // todo: error if invalid syntax?
-        attr[1] = value;
+        current[1][attrKey] = value
         mode = ModeAttrKey;
       },
       [ModeNodesMerge]: () => {
@@ -113,7 +112,9 @@ export default function ytl(strings, ...values) {
         mode = ModeTag;
       },
       [ModeAttrsMerge]: () => {
-        current[1] = current[1].concat(value);
+        // might be inefficient?
+        // todo: check performance
+        current[1] = { ...current[1], ...value };
         mode = ModeAttrKey;
       },
     })[mode]();

@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@brecert/ytl",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A small tagged template dsl inspired by KDL and htm that transforms through hyperscript functions",
   "types": "ytl.d.ts",
   "main": "ytl.js",

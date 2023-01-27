@@ -10,29 +10,20 @@
 // nodes = (node | merge | $input)*
 // value = string | name | $input
 
-const TOKENS = /([\w_-]+)|(?:"([^]*?)")|(\/\/.*)|(\s+)|(\.\.\.)|(.)/g;
-//              ^ name    ^ string     ^ comment ^ ws  ^ dots   ^ symbol
+const TOKENS = /([\w_-]+)|(?:"([^]*?)")|(\s+|\/\/.*)|(\.\.\.)|(.)/g;
+//              ^ name    ^ string      ^ ignore     ^ dots   ^ symbol
 
 const
   /** unquoted names, like 'foo', 'bar', 'hello-world' */
   TokenName = 1,
   /** quoted values, like '"foo"', '"hello world"' */
   TokenString = 2,
-  /** comments, like '// ignore this' */
-  TokenComment = 3,
-  /** whitespace, like ' ', '\n' */
-  TokenWhitespace = 4,
+  /** comments, like '// ignore this' or whitespace like ' ' */
+  TokenIgnore = 3,
   /** dots, used to indicate that a value should be merged into the current one instead of appended */
-  TokenDots = 5,
+  TokenDots = 4,
   /** anything else that wasn't already matched */
-  TokenSymbol = 6;
-
-// todo: benchmark if iterating and filtering in the loop is faster than here, it probably is.
-// it may reduce byte size as well
-/** @param {string} string */
-const lex = (string) =>
-  [...string.matchAll(TOKENS)]
-    .filter((t) => !t[TokenWhitespace]);
+  TokenSymbol = 5;
 
 const
   ModeTag = 0,
@@ -122,10 +113,10 @@ export default function ytl(strings, ...values) {
 
   for (let i = 0; i < strings.length; i++) {
     const string = strings[i];
-    const tokens = lex(string);
+    const tokens = string.matchAll(TOKENS);
 
     for (const token of tokens) {
-      if (token[TokenComment]) continue;
+      if (token[TokenIgnore]) continue;
       // todo: change structure so this isn't needed
       handleMode(token.slice(1).find((_) => _), token);
     }

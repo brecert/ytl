@@ -8,6 +8,7 @@
   "module": "ytl.js",
   "browser": "ytl.js",
   "publishConfig": {
+    "access": "public",
     "module": "dist/ytl.min.js",
     "browser": "dist/ytl.min.js"
   },
